@@ -21,6 +21,14 @@ for file in files:
 words = text.lower().split()
 wordcount = {}
 
+temp=""
+known_file = open("./db/known","rU")
+for line in known_file:
+    temp+=line
+
+known_words=temp.lower().split()
+
+
 for word in words:
 	if word.isalpha() and len(word)>2:
 		if word in wordcount:
@@ -33,6 +41,8 @@ frequency =  sorted(wordcount,key=wordcount.get,reverse=True)
 shanbay_api = 'https://api.shanbay.com/bdc/search/?word='
 
 for word in frequency:
+    if word in known_words:
+        break;
     res = urllib2.urlopen(shanbay_api+word)
     js = json.load(res)
     if js['status_code']==0 :
